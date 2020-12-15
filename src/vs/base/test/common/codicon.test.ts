@@ -5,15 +5,14 @@
 
 import * as assert from 'assert';
 import { IMatch } from 'vs/base/common/filters';
-import { matchesFuzzyCodiconAware, parseCodicons, IParsedCodicons } from 'vs/base/common/codicon';
-import { stripCodicons } from 'vs/base/common/codicons';
+import { matchesFuzzyIconAware, parseLabelWithIcons, IParsedLabelWithIcons, stripIcons } from 'vs/base/common/iconLabels';
 
 export interface ICodiconFilter {
 	// Returns null if word doesn't match.
-	(query: string, target: IParsedCodicons): IMatch[] | null;
+	(query: string, target: IParsedLabelWithIcons): IMatch[] | null;
 }
 
-function filterOk(filter: ICodiconFilter, word: string, target: IParsedCodicons, highlights?: { start: number; end: number; }[]) {
+function filterOk(filter: ICodiconFilter, word: string, target: IParsedLabelWithIcons, highlights?: { start: number; end: number; }[]) {
 	let r = filter(word, target);
 	assert(r);
 	if (highlights) {
@@ -26,19 +25,19 @@ suite('Codicon', () => {
 
 		// Camel Case
 
-		filterOk(matchesFuzzyCodiconAware, 'ccr', parseCodicons('$(codicon)CamelCaseRocks$(codicon)'), [
+		filterOk(matchesFuzzyIconAware, 'ccr', parseLabelWithIcons('$(codicon)CamelCaseRocks$(codicon)'), [
 			{ start: 10, end: 11 },
 			{ start: 15, end: 16 },
 			{ start: 19, end: 20 }
 		]);
 
-		filterOk(matchesFuzzyCodiconAware, 'ccr', parseCodicons('$(codicon) CamelCaseRocks $(codicon)'), [
+		filterOk(matchesFuzzyIconAware, 'ccr', parseLabelWithIcons('$(codicon) CamelCaseRocks $(codicon)'), [
 			{ start: 11, end: 12 },
 			{ start: 16, end: 17 },
 			{ start: 20, end: 21 }
 		]);
 
-		filterOk(matchesFuzzyCodiconAware, 'iut', parseCodicons('$(codicon) Indent $(octico) Using $(octic) Tpaces'), [
+		filterOk(matchesFuzzyIconAware, 'iut', parseLabelWithIcons('$(codicon) Indent $(octico) Using $(octic) Tpaces'), [
 			{ start: 11, end: 12 },
 			{ start: 28, end: 29 },
 			{ start: 43, end: 44 },
@@ -46,22 +45,22 @@ suite('Codicon', () => {
 
 		// Prefix
 
-		filterOk(matchesFuzzyCodiconAware, 'using', parseCodicons('$(codicon) Indent Using Spaces'), [
+		filterOk(matchesFuzzyIconAware, 'using', parseLabelWithIcons('$(codicon) Indent Using Spaces'), [
 			{ start: 18, end: 23 },
 		]);
 
 		// Broken Codicon
 
-		filterOk(matchesFuzzyCodiconAware, 'codicon', parseCodicons('This $(codicon Indent Using Spaces'), [
+		filterOk(matchesFuzzyIconAware, 'codicon', parseLabelWithIcons('This $(codicon Indent Using Spaces'), [
 			{ start: 7, end: 14 },
 		]);
 
-		filterOk(matchesFuzzyCodiconAware, 'indent', parseCodicons('This $codicon Indent Using Spaces'), [
+		filterOk(matchesFuzzyIconAware, 'indent', parseLabelWithIcons('This $codicon Indent Using Spaces'), [
 			{ start: 14, end: 20 },
 		]);
 
 		// Testing #59343
-		filterOk(matchesFuzzyCodiconAware, 'unt', parseCodicons('$(primitive-dot) $(file-text) Untitled-1'), [
+		filterOk(matchesFuzzyIconAware, 'unt', parseLabelWithIcons('$(primitive-dot) $(file-text) Untitled-1'), [
 			{ start: 30, end: 33 },
 		]);
 	});
@@ -70,9 +69,9 @@ suite('Codicon', () => {
 suite('Codicons', () => {
 
 	test('stripCodicons', () => {
-		assert.equal(stripCodicons('Hello World'), 'Hello World');
-		assert.equal(stripCodicons('$(Hello World'), '$(Hello World');
-		assert.equal(stripCodicons('$(Hello) World'), ' World');
-		assert.equal(stripCodicons('$(Hello) W$(oi)rld'), ' Wrld');
+		assert.equal(stripIcons('Hello World'), 'Hello World');
+		assert.equal(stripIcons('$(Hello World'), '$(Hello World');
+		assert.equal(stripIcons('$(Hello) World'), ' World');
+		assert.equal(stripIcons('$(Hello) W$(oi)rld'), ' Wrld');
 	});
 });

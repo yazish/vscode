@@ -23,7 +23,7 @@ import { INotebookCellStatusBarService } from 'vs/workbench/contrib/notebook/com
 import { NotebookCellsChangeType } from 'vs/workbench/contrib/notebook/common/notebookCommon';
 import { ThemeIcon } from 'vs/platform/theme/common/themeService';
 import { collapsedIcon, expandedIcon } from 'vs/workbench/contrib/notebook/browser/notebookIcons';
-import { renderCodicons } from 'vs/base/browser/codicons';
+import { renderLabelWithIcons } from 'vs/base/browser/ui/iconLabel/iconLabels';
 
 export class StatefulMarkdownCell extends Disposable {
 
@@ -355,10 +355,10 @@ export class StatefulMarkdownCell extends Disposable {
 				this.templateData.foldingIndicator.innerText = '';
 				break;
 			case CellFoldingState.Collapsed:
-				DOM.reset(this.templateData.foldingIndicator, ...renderCodicons(ThemeIcon.asCodiconLabel(collapsedIcon)));
+				DOM.reset(this.templateData.foldingIndicator, ...renderLabelWithIcons(ThemeIcon.asCodiconLabel(collapsedIcon)));
 				break;
 			case CellFoldingState.Expanded:
-				DOM.reset(this.templateData.foldingIndicator, ...renderCodicons(ThemeIcon.asCodiconLabel(expandedIcon)));
+				DOM.reset(this.templateData.foldingIndicator, ...renderLabelWithIcons(ThemeIcon.asCodiconLabel(expandedIcon)));
 				break;
 
 			default:

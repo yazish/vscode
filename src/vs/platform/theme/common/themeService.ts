@@ -104,6 +104,7 @@ export namespace ThemeIcon {
 		return '$(' + icon.id + ')';
 	}
 
+
 	export function revive(icon: any): ThemeIcon | undefined {
 		if (ThemeIcon.isThemeIcon(icon)) {
 			return { id: icon.id, color: icon.color ? { id: icon.color.id } : undefined };

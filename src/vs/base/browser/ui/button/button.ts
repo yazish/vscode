@@ -11,7 +11,7 @@ import { mixin } from 'vs/base/common/objects';
 import { Event as BaseEvent, Emitter } from 'vs/base/common/event';
 import { Disposable, IDisposable } from 'vs/base/common/lifecycle';
 import { Gesture, EventType as TouchEventType } from 'vs/base/browser/touch';
-import { renderCodicons } from 'vs/base/browser/codicons';
+import { renderLabelWithIcons } from 'vs/base/browser/ui/iconLabel/iconLabels';
 import { addDisposableListener, IFocusTracker, EventType, EventHelper, trackFocus, reset, removeTabIndexAndUpdateFocus } from 'vs/base/browser/dom';
 import { IContextMenuProvider } from 'vs/base/browser/contextmenu';
 import { IAction, IActionRunner } from 'vs/base/common/actions';
@@ -191,7 +191,7 @@ export class Button extends Disposable implements IButton {
 	set label(value: string) {
 		this._element.classList.add('monaco-text-button');
 		if (this.options.supportCodicons) {
-			reset(this._element, ...renderCodicons(value));
+			reset(this._element, ...renderLabelWithIcons(value));
 		} else {
 			this._element.textContent = value;
 		}
